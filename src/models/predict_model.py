@@ -23,6 +23,7 @@ def predict(config) -> None:
     state_dict = torch.load(hparams.load_model_from)
     model.load_state_dict(state_dict)
 
+    # Make prediction
     out = model(data.x, data.edge_index)
     # Use the class with highest probability.
     pred = out.argmax(dim=1)
