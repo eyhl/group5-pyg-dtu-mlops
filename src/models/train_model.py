@@ -57,7 +57,7 @@ def train(config):
         print(f'Epoch: {epoch:03d}, Loss: {loss:.4f}')
 
     # Save model
-    # TODO
+    torch.save(model.state_dict(), '/models/checkpoint.pth')
 
     # Evaluate model
     test_acc = evaluate(model, data)
