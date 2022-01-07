@@ -8,8 +8,4 @@ hyperparams:
   num_features: 1433
   num_classes: 7
   dropout: 0.5
-<<<<<<< HEAD
-  load_model_from: ../../../models/checkpoint.pth
-=======
   checkpoint_name: checkpoint.pt
->>>>>>> f5ba5629305521f7770818db123b0fc58b51e120
