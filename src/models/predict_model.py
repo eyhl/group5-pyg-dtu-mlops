@@ -34,4 +34,4 @@ def predict(config) -> None:
     print(f'Prediction accuracy: {valid_acc * 100:.2f}%')
 
 if __name__ == "__main__":
-    train()
+    predict()
