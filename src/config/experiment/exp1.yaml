@@ -2,7 +2,7 @@
 hyperparams:
   batch_size: 100
   lr: 1e-3
-  epochs: 2
+  epochs: 100
   seed: 666
   hidden_channels: 16
   num_features: 1433

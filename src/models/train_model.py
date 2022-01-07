@@ -1,4 +1,3 @@
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -14,8 +13,9 @@ from src.models.model import GCN
 @hydra.main(config_path="../config", config_name='default_config.yaml')
 def train(config):
     print(f"configuration: \n {OmegaConf.to_yaml(config)}")
-    hparams = config.experiment
+    hparams = config.experiment.hyperparams
     DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
+    torch.manual_seed(hparams["seed"])
 
     # Load data
     data = load_data("../../data/", name = "Cora")
