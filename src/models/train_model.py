@@ -3,12 +3,24 @@ import torch.nn as nn
 import torch.nn.functional as F
 import hydra
 from omegaconf import OmegaConf
+import torch_geometric
 
 import sys
 sys.path.append("..")
 from src.data.make_dataset import load_data
 from src.models.model import GCN
 
+
+def evaluate(model: nn.Module, data: torch_geometric.data.Data) -> float:
+    model.eval()
+    out = model(data.x, data.edge_index)
+    # Use the class with highest probability.
+    pred = out.argmax(dim=1)
+    # Check against ground-truth labels.
+    test_correct = pred[data.test_mask] == data.y[data.test_mask]
+    # Derive ratio of correct predictions.
+    test_acc = int(test_correct.sum()) / int(data.test_mask.sum())
+    return test_acc
 
 @hydra.main(config_path="../config", config_name='default_config.yaml')
 def train(config):
@@ -26,8 +38,7 @@ def train(config):
     criterion = torch.nn.CrossEntropyLoss()
     epochs = hparams["epochs"]
     train_loss = []
-    train_accuracy = []
-
+    
     # Train model
     for epoch in range(epochs):
         # Clear gradients
@@ -44,8 +55,13 @@ def train(config):
         train_loss.append(loss.item())
         # print 
         print(f'Epoch: {epoch:03d}, Loss: {loss:.4f}')
-     
 
+    # Save model
+    # TODO
+
+    # Evaluate model
+    test_acc = evaluate(model, data)
+    print(f'Test accuracy: {test_acc * 100:.2f}%')
 
 if __name__ == "__main__":
     train()
