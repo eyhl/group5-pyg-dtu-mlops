@@ -1,11 +1,13 @@
-from torch_geometric.nn import GCNConv
+import torch
 import torch.nn.functional as F
 from torch import nn
-import torch
+from torch_geometric.nn import GCNConv
 
 
 class GCN(nn.Module):
-    def __init__(self, hidden_channels: int, num_features: int, num_classes: int, dropout: float) -> None:
+    def __init__(
+        self, hidden_channels: int, num_features: int, num_classes: int, dropout: float
+    ) -> None:
         super().__init__()
         self.conv1 = GCNConv(num_features, hidden_channels)
         self.conv2 = GCNConv(hidden_channels, num_classes)

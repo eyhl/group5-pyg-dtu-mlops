@@ -1,5 +1,6 @@
 # imports
 import hydra
+
 '''
 Usage:
 $ python hydra_template.py experiment=exp1
