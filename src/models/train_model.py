@@ -4,12 +4,15 @@ import torch.nn.functional as F
 import hydra
 from omegaconf import OmegaConf
 import torch_geometric
+import logging
 
 import sys
 sys.path.append("..")
 from src.data.make_dataset import load_data
 from src.models.model import GCN
 
+log = logging.getLogger(__name__)
+print = log.info
 
 def evaluate(model: nn.Module, data: torch_geometric.data.Data) -> float:
     model.eval()
