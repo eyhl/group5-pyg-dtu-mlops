@@ -8,7 +8,7 @@ from src.models.model import GCN
 
 
 @hydra.main(config_path="../config", config_name='default_config.yaml')
-def predict(config):
+def predict(config) -> None:
     print(f"configuration: \n {OmegaConf.to_yaml(config)}")
     hparams = config.experiment.hyperparams
     DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -32,3 +32,6 @@ def predict(config):
     valid_acc = int(valid_correct.sum()) / int(data.val_mask.sum())
 
     print(f'Prediction accuracy: {valid_acc * 100:.2f}%')
+
+if __name__ == "__main__":
+    train()
