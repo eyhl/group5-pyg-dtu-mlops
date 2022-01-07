@@ -4,12 +4,15 @@ import torch.nn.functional as F
 import hydra
 from omegaconf import OmegaConf
 import torch_geometric
+import logging
 
 import sys
 sys.path.append("..")
 from src.data.make_dataset import load_data
 from src.models.model import GCN
 
+log = logging.getLogger(__name__)
+print = log.info
 
 def evaluate(model: nn.Module, data: torch_geometric.data.Data) -> float:
     model.eval()
@@ -28,9 +31,10 @@ def train(config):
     hparams = config.experiment.hyperparams
     DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
     torch.manual_seed(hparams["seed"])
+    orig_cwd = hydra.utils.get_original_cwd()
 
     # Load data
-    data = load_data("../../data/", name = "Cora")
+    data = load_data(orig_cwd + "/data/", name = "Cora")
 
     # Model 
     model = GCN(hidden_channels=hparams["hidden_channels"], num_features=hparams["num_features"], num_classes=hparams["num_classes"], dropout=hparams["dropout"])
@@ -38,7 +42,7 @@ def train(config):
     criterion = torch.nn.CrossEntropyLoss()
     epochs = hparams["epochs"]
     train_loss = []
-    
+
     # Train model
     for epoch in range(epochs):
         # Clear gradients
@@ -57,7 +61,7 @@ def train(config):
         print(f'Epoch: {epoch:03d}, Loss: {loss:.4f}')
 
     # Save model
-    torch.save(model.state_dict(), '/models/checkpoint.pth')
+    torch.save(model.state_dict(), orig_cwd + '/models/' + hparams["checkpoint_name"])
 
     # Evaluate model
     test_acc = evaluate(model, data)
