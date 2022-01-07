@@ -5,4 +5,3 @@ dependencies:
   - python=3.9
   - pytorch
   - cookiecutter
-prefix: /Users/eyhli/miniforge3/envs/mlops_proj
