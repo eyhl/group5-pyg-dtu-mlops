@@ -3,6 +3,18 @@ group5-pyg-dtu-mlops
 
 Group 5 in mlops at DTU working on pytorch geometric
 
+1. **Overall goal of the project?**
+The   goal   is   to   classify   scientific   papers   into   seven   research areas based on a citation network and a dictionary describing content of the paper.
+2. **What framework are you going to use?**
+Since we are going to work with graph structures, we will use PyTorch-Geometric   ecosystem.   It   implements   neural   network
+layers specific for this type of data.
+3. **How do you intend to include the framework into your project?**
+We will use this ecosystem to load and transform the data and build Graph Neural Network model architecture.
+4. **What data are you going to run on?**
+We will start with a Cora dataset consisting of 2,708 scientific publications   classified   among   seven   classes.   The   citation network consists of 10,556 links. Each publication is described by   a   binary   label   indicating   the   absence/presence   of   the corresponding word from the dictionary, which consists of 1,433 unique   words.   This   data   is   [publicly   available](https://deepai.org/dataset/cora). We will load it using PyTorch-Geometric interface.
+5. **What deep learning models do you expect to use?**
+We are going to create our own deep learning model. We will work   with   Graph   Neural   Network   models   and   incorporate different   GNN   layers   implemented   in   PyTorch-Geometric, starting with Graph Convolutional Network (GCN) layer.
+
 Project Organization
 ------------
 
