@@ -8,3 +8,4 @@ hyperparams:
   num_features: 1433
   num_classes: 7
   dropout: 0.5
+  checkpoint_name: checkpoint.pt
