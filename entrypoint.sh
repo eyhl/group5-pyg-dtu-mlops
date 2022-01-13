@@ -1,5 +1,4 @@
 #!/bin/sh
 #dvc pull
-key=$(<decrypted-data.txt)
-wandb login $key
+wandb login $YOUR_API_KEY
 python -u src/models/train_model.py
