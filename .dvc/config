@@ -1,4 +1,6 @@
 [core]
-    remote = storage
+    remote = remote_storage
 ['remote "storage"']
     url = gdrive://10uq7t0so3uqeImzFD_GtpllPV3os_aGV
+['remote "remote_storage"']
+    url = gs://group5-pyg-data/
