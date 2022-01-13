@@ -1,8 +1,7 @@
-import cProfile
+# import cProfile
 import logging
-import pstats
+# import pstats
 import sys
-from pstats import SortKey
 
 import hydra
 import torch
@@ -13,6 +12,10 @@ from omegaconf import OmegaConf
 import wandb
 from src.data.make_dataset import load_data
 from src.models.model import GCN
+
+# from pstats import SortKey
+
+
 
 sys.path.append("..")
 
@@ -84,9 +87,9 @@ def train(config):
 
 
 if __name__ == "__main__":
-#     cProfile.run('train()', 'restats_batch')
-#     p = pstats.Stats('restats_batch')
-#     p.sort_stats(SortKey.CUMULATIVE, SortKey.CALLS)
-#     p.dump_stats('restats_batch.prof')
-#     p.print_stats(30)
+    # cProfile.run('train()', 'restats_batch')
+    # p = pstats.Stats('restats_batch')
+    # p.sort_stats(SortKey.CUMULATIVE, SortKey.CALLS)
+    # p.dump_stats('restats_batch.prof')
+    # p.print_stats(30)
     train()
