@@ -9,6 +9,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch_geometric
+from torch_geometric.loader import DataLoader
 from omegaconf import OmegaConf
 
 from src.data.make_dataset import load_data
@@ -41,7 +42,7 @@ def train(config):
 
     # Load data
     data = load_data(orig_cwd + "/data/", name="Cora")
-
+    loader = DataLoader(data, batch_size=32, shuffle=True)
     # Model
     model = GCN(
         hidden_channels=hparams["hidden_channels"],
@@ -56,27 +57,28 @@ def train(config):
 
     # Train model
     for epoch in range(epochs):
+        for batch in loader:
         # Clear gradients
-        optimizer.zero_grad()
-        # Perform a single forward pass
-        out = model(data.x, data.edge_index)
-        # Compute the loss solely based on the training nodes
-        loss = criterion(out[data.train_mask], data.y[data.train_mask])
-        # Derive gradients
-        loss.backward()
-        # Update parameters based on gradients
-        optimizer.step()
-        # Append results
-        train_loss.append(loss.item())
-        # print
-        print(f"Epoch: {epoch:03d}, Loss: {loss:.4f}")
-        wandb.log({"Training loss": loss})
+            optimizer.zero_grad()
+            # Perform a single forward pass
+            out = model(batch.x, batch.edge_index)
+            # Compute the loss solely based on the training nodes
+            loss = criterion(out[batch.train_mask], batch.y[batch.train_mask])
+            # Derive gradients
+            loss.backward()
+            # Update parameters based on gradients
+            optimizer.step()
+            # Append results
+            train_loss.append(loss.item())
+            # print
+            print(f"Epoch: {epoch:03d}, Loss: {loss:.4f}")
+            wandb.log({"Training loss": loss})
 
     # Save model
     torch.save(model.state_dict(), orig_cwd + "/models/" + hparams["checkpoint_name"])
 
     # Evaluate model
-    test_acc = evaluate(model, data)
+    test_acc = evaluate(model, data[0])
     print(f"Test accuracy: {test_acc * 100:.2f}%")
     wandb.log({"Test accuracy": test_acc})
 
