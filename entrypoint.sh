@@ -1,4 +1,5 @@
 #!/bin/sh
 #dvc pull
-wandb login $1
+key=$(<decrypted-data.txt)
+wandb login $key
 python -u src/models/train_model.py

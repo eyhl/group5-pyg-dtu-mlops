@@ -1,0 +1,8 @@
+steps:
+- name: gcr.io/cloud-builders/gcloud
+  entrypoint: 'bash'
+  args: [ '-c', "gcloud secrets versions access latest --secret=projects/688801769388/secrets/YOUR_API_KEY --format='get(payload.data)' | tr '_-' '/+' | base64 -d > decrypted-data.txt" ]
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/linear-rig-337909/group5_proj_cpu_container0', '.']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/linear-rig-337909/group5_proj_cpu_container0']
