@@ -1,0 +1,12 @@
+experiment:
+  hyperparams:
+    batch_size: 100
+    lr: 0.001
+    epochs: 100
+    seed: 666
+    hidden_channels: 16
+    num_features: 1433
+    num_classes: 7
+    dropout: 0.5
+    checkpoint_name: checkpoint.pt
+    load_model_from: /models/
