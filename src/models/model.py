@@ -18,10 +18,7 @@ class GCN(nn.Module):
             raise ValueError("Expected input is not a 2D tensor,"
                              f"instead it is a {x.ndim}D tensor.")
         if x.shape[1] != 1433:
-            raise ValueError("Feature vector should be of size 1433.")
-        if x.shape[0] != len(edge_index):
-            raise ValueError(f"Number of training examples ({x.shape[0]})"
-                             f"does not match number of labels ({len(edge_index)})")
+            raise ValueError(f"Feature vector should be of size 1433.")
         x = self.conv1(x, edge_index)
         x = self.dropout(F.relu(x))
         x = self.conv2(x, edge_index)

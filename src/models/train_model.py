@@ -9,7 +9,6 @@ import torch
 import torch.nn as nn
 import torch_geometric
 from omegaconf import OmegaConf
-from torch_geometric.loader import DataLoader
 
 import wandb
 from src.data.make_dataset import load_data
@@ -44,7 +43,7 @@ def train(config):
 
     # Load data
     data = load_data(orig_cwd + "/data/", name="Cora")
-    loader = DataLoader(data, batch_size=32, shuffle=True)
+
     # Model
     model = GCN(
         hidden_channels=hparams["hidden_channels"],
@@ -59,36 +58,35 @@ def train(config):
 
     # Train model
     for epoch in range(epochs):
-        for batch in loader:
-            # Clear gradients
-            optimizer.zero_grad()
-            # Perform a single forward pass
-            out = model(batch.x, batch.edge_index)
-            # Compute the loss solely based on the training nodes
-            loss = criterion(out[batch.train_mask], batch.y[batch.train_mask])
-            # Derive gradients
-            loss.backward()
-            # Update parameters based on gradients
-            optimizer.step()
-            # Append results
-            train_loss.append(loss.item())
-            # print
-            print(f"Epoch: {epoch:03d}, Loss: {loss:.4f}")
-            wandb.log({"Training loss": loss})
+        # Clear gradients
+        optimizer.zero_grad()
+        # Perform a single forward pass
+        out = model(data.x, data.edge_index)
+        # Compute the loss solely based on the training nodes
+        loss = criterion(out[data.train_mask], data.y[data.train_mask])
+        # Derive gradients
+        loss.backward()
+        # Update parameters based on gradients
+        optimizer.step()
+        # Append results
+        train_loss.append(loss.item())
+        # print
+        print(f"Epoch: {epoch:03d}, Loss: {loss:.4f}")
+        wandb.log({"Training loss": loss})
 
     # Save model
     torch.save(model.state_dict(), orig_cwd + "/models/" + hparams["checkpoint_name"])
 
     # Evaluate model
-    test_acc = evaluate(model, data[0])
+    test_acc = evaluate(model, data)
     print(f"Test accuracy: {test_acc * 100:.2f}%")
     wandb.log({"Test accuracy": test_acc})
 
 
 if __name__ == "__main__":
-    #cProfile.run('train()', 'restats_batch')
-    #p = pstats.Stats('restats_batch')
-    #p.sort_stats(SortKey.CUMULATIVE, SortKey.CALLS)
-    #p.dump_stats('restats_batch.prof')
-    #p.print_stats(30)
+#     cProfile.run('train()', 'restats_batch')
+#     p = pstats.Stats('restats_batch')
+#     p.sort_stats(SortKey.CUMULATIVE, SortKey.CALLS)
+#     p.dump_stats('restats_batch.prof')
+#     p.print_stats(30)
     train()
