@@ -1,16 +1,14 @@
+import cProfile
 import logging
+import pstats
 import sys
+from pstats import SortKey
 
 import hydra
 import torch
 import torch.nn as nn
 import torch_geometric
-from torch_geometric.loader import DataLoader
 from omegaconf import OmegaConf
-
-import cProfile
-import pstats
-from pstats import SortKey
 
 import wandb
 from src.data.make_dataset import load_data
@@ -86,9 +84,9 @@ def train(config):
 
 
 if __name__ == "__main__":
-    cProfile.run('train()', 'restats_batch')
-    p = pstats.Stats('restats_batch')
-    p.sort_stats(SortKey.CUMULATIVE, SortKey.CALLS)
-    p.dump_stats('restats_batch.prof')
-    p.print_stats(30)
-    # train()
+#     cProfile.run('train()', 'restats_batch')
+#     p = pstats.Stats('restats_batch')
+#     p.sort_stats(SortKey.CUMULATIVE, SortKey.CALLS)
+#     p.dump_stats('restats_batch.prof')
+#     p.print_stats(30)
+    train()
