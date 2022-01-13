@@ -3,6 +3,31 @@ import torch
 
 from src.models.model import GCN
 
+from src.data.make_dataset import load_data
+
+
+def test_model_input_output():
+    
+    data = load_data("data/", name="Cora")
+
+    N_nodes = 2708
+    N_features = 1433
+    N_classes = 7
+
+    model = GCN(
+        hidden_channels=16,
+        num_features=1433,
+        num_classes=N_classes,
+        dropout=0.5,
+    )
+
+    # Check for the input dimension
+    assert data.x.shape == torch.Size([N_nodes, N_features])
+    assert data.y.shape == torch.Size([N_nodes])
+    out = model(data.x, data.edge_index)
+    # Check for the output dimension
+    assert out.shape == torch.Size([N_nodes, N_classes])
+
 
 def test_on_wrong_dimension_to_forward():
     model = GCN(
@@ -29,3 +54,4 @@ def test_on_wrong_feature_dimension_to_forward():
 if __name__ == "__main__":
     test_on_wrong_dimension_to_forward()
     test_on_wrong_feature_dimension_to_forward()
+    test_model_input_output()
