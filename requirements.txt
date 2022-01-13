@@ -14,7 +14,7 @@ hydra-core
 wandb
 dvc
 dvc[gs]
-
+pytest
 
 
 
@@ -32,10 +32,14 @@ dvc[gs]
 # wandb
 # pytest
 
+# torch-scatter -f https://data.pyg.org/whl/torch-1.10.0+cu113.html
+# torch-sparse -f https://data.pyg.org/whl/torch-1.10.0+cu113.html
+# torch-geometric
+
 # # local package
 # -e .
 
-# # !! NOTE !! ALSO INSTALL:
-# # torch_geometric
-# # Best installation practice depends on platform 
-# # (see cpu_trainer.dockerfile for an example), or torch_geometric docs
+# !! NOTE !! ALSO INSTALL:
+# torch_geometric
+# Best installation practice depends on platform
+# (see cpu_trainer.dockerfile for an example), or torch_geometric docs
