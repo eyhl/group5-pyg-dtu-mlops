@@ -60,21 +60,21 @@ def train(config):
 
     # Train model
     for epoch in range(epochs):
-            # Clear gradients
-            optimizer.zero_grad()
-            # Perform a single forward pass
-            out = model(data.x, data.edge_index)
-            # Compute the loss solely based on the training nodes
-            loss = criterion(out[data.train_mask], data.y[data.train_mask])
-            # Derive gradients
-            loss.backward()
-            # Update parameters based on gradients
-            optimizer.step()
-            # Append results
-            train_loss.append(loss.item())
-            # print
-            print(f"Epoch: {epoch:03d}, Loss: {loss:.4f}")
-            wandb.log({"Training loss": loss})
+        # Clear gradients
+        optimizer.zero_grad()
+        # Perform a single forward pass
+        out = model(data.x, data.edge_index)
+        # Compute the loss solely based on the training nodes
+        loss = criterion(out[data.train_mask], data.y[data.train_mask])
+        # Derive gradients
+        loss.backward()
+        # Update parameters based on gradients
+        optimizer.step()
+        # Append results
+        train_loss.append(loss.item())
+        # print
+        print(f"Epoch: {epoch:03d}, Loss: {loss:.4f}")
+        wandb.log({"Training loss": loss})
 
     # Save model
     torch.save(model.state_dict(), orig_cwd + "/models/" + hparams["checkpoint_name"])
