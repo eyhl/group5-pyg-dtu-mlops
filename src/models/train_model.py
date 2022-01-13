@@ -1,22 +1,22 @@
 import logging
 import sys
 
-sys.path.append("..")
-
-import wandb
 import hydra
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 import torch_geometric
 from omegaconf import OmegaConf
 
+import wandb
 from src.data.make_dataset import load_data
 from src.models.model import GCN
+
+sys.path.append("..")
 
 log = logging.getLogger(__name__)
 print = log.info
 wandb.init(project="group5-pyg-dtumlops", entity="group5-dtumlops")
+
 
 def evaluate(model: nn.Module, data: torch_geometric.data.Data) -> float:
     model.eval()
@@ -35,7 +35,6 @@ def train(config):
     print(f"configuration: \n {OmegaConf.to_yaml(config)}")
     hparams = config.experiment.hyperparams
     wandb.config = hparams
-    DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
     torch.manual_seed(hparams["seed"])
     orig_cwd = hydra.utils.get_original_cwd()
 
