@@ -1,21 +1,41 @@
-# local package
+click==8.0.3
+matplotlib==3.5.1
+numpy==1.21.5
+python-dotenv==0.19.2
 -e .
+# torch==1.10.1
+# torchvision==0.11.2
+typing==3.7.4.3
 
-# external requirements
-setuptools
-click
-python-dotenv>=0.5.1
-dvc
-dvc[gdrive]
-dvc[gs]
-omegaconf
+omegaconf~=2.1.1
+src~=0.1.0
+setuptools~=60.2.0
 hydra-core
 wandb
-pytest
+dvc
+dvc[gs]
 
 
 
-# !! NOTE !! ALSO INSTALL:
-# torch_geometric
-# Best installation practice depends on platform 
-# (see cpu_trainer.dockerfile for an example), or torch_geometric docs
+
+
+
+# # external requirements
+# setuptools
+# click
+# python-dotenv>=0.5.1
+# dvc
+# dvc[gdrive]
+# dvc[gs]
+# omegaconf
+# hydra-core
+# wandb
+# pytest
+
+# # local package
+# -e .
+
+# # !! NOTE !! ALSO INSTALL:
+# # torch_geometric
+# # Best installation practice depends on platform 
+# # (see cpu_trainer.dockerfile for an example), or torch_geometric docs
