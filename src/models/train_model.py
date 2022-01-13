@@ -1,20 +1,21 @@
 import logging
 import sys
 
-sys.path.append("..")
-
 import hydra
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 import torch_geometric
 from omegaconf import OmegaConf
 
+import wandb
 from src.data.make_dataset import load_data
 from src.models.model import GCN
 
+sys.path.append("..")
+
 log = logging.getLogger(__name__)
 print = log.info
+wandb.init(project="group5-pyg-dtumlops", entity="group5-dtumlops")
 
 
 def evaluate(model: nn.Module, data: torch_geometric.data.Data) -> float:
@@ -33,7 +34,7 @@ def evaluate(model: nn.Module, data: torch_geometric.data.Data) -> float:
 def train(config):
     print(f"configuration: \n {OmegaConf.to_yaml(config)}")
     hparams = config.experiment.hyperparams
-    DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+    wandb.config = hparams
     torch.manual_seed(hparams["seed"])
     orig_cwd = hydra.utils.get_original_cwd()
 
@@ -68,6 +69,7 @@ def train(config):
         train_loss.append(loss.item())
         # print
         print(f"Epoch: {epoch:03d}, Loss: {loss:.4f}")
+        wandb.log({"Training loss": loss})
 
     # Save model
     torch.save(model.state_dict(), orig_cwd + "/models/" + hparams["checkpoint_name"])
@@ -75,6 +77,7 @@ def train(config):
     # Evaluate model
     test_acc = evaluate(model, data)
     print(f"Test accuracy: {test_acc * 100:.2f}%")
+    wandb.log({"Test accuracy": test_acc})
 
 
 if __name__ == "__main__":

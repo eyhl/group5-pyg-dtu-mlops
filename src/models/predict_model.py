@@ -10,7 +10,6 @@ from src.models.model import GCN
 def predict(config) -> None:
     print(f"configuration: \n {OmegaConf.to_yaml(config)}")
     hparams = config.experiment.hyperparams
-    DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
     torch.manual_seed(hparams["seed"])
     orig_cwd = hydra.utils.get_original_cwd()
 
