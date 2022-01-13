@@ -2,7 +2,11 @@
 -e .
 
 # external requirements
+<<<<<<< HEAD
 setuptools
+=======
+torch
+>>>>>>> 81773efa80e5d40e0ad399e1a3515835043df9fc
 click
 python-dotenv>=0.5.1
 dvc
@@ -11,8 +15,12 @@ dvc[gs]
 omegaconf
 hydra-core
 wandb
+<<<<<<< HEAD
 
 # !! NOTE !! ALSO INSTALL:
 # torch_geometric
 # Best installation practice depends on platform 
 # (see cpu_trainer.dockerfile for an example), or torch_geometric docs
+=======
+pytest
+>>>>>>> 81773efa80e5d40e0ad399e1a3515835043df9fc

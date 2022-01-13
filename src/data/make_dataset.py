@@ -15,4 +15,4 @@ def load_data(path: str, name: str) -> torch_geometric.data.Data:
     # Get torch_geometric.data.InMemoryDataset dataset
     dataset = Planetoid(root=path, name=name, transform=NormalizeFeatures())
     # Return only the data
-    return dataset[0]
+    return dataset
