@@ -12,7 +12,6 @@ omegaconf
 hydra-core
 wandb
 pytest
-torch
 torch-scatter -f https://data.pyg.org/whl/torch-1.10.0+cu113.html
 torch-sparse -f https://data.pyg.org/whl/torch-1.10.0+cu113.html
 torch-geometric
