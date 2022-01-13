@@ -25,16 +25,23 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 #RUN ln -s /usr/bin/python3.9-dev /usr/bin/python3
 
+COPY ./requirements.txt /.
+COPY ./setup.py /.
+
+
 # Installs pip.
 RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
     python3 get-pip.py && \
-    pip install setuptools && \
+    pip install -r requirements.txt --no-cache-dir && \
+    #pip install setuptools && \
     rm get-pip.py
 
 WORKDIR /root
 
-# Installs pytorch and torchvision.
-RUN pip install torch==1.0.0 torchvision==0.2.1
+# Installs pytorch and torchvision manually as they do not want to cooporate.
+RUN pip download torch==1.10.1
+RUN pip install torch*.whl 
+RUN pip install torchvision==0.11.2
 
 # Install PyG.
 # RUN CPATH=/usr/local/cuda/include:$CPATH \
@@ -43,11 +50,17 @@ RUN pip install torch==1.0.0 torchvision==0.2.1
 
 RUN pip install scipy
 
-RUN pip install --no-index torch-scatter -f https://data.pyg.org/whl/torch-1.4.0+cu101.html \
- && pip install --no-index torch-sparse -f https://data.pyg.org/whl/torch-1.4.0+cu101.html \
- && pip install --no-index torch-cluster -f https://data.pyg.org/whl/torch-1.4.0+cu101.html \
- && pip install --no-index torch-spline-conv -f https://data.pyg.org/whl/torch-1.4.0+cu101.html \
- && pip install torch-geometric
+RUN pip install torch-scatter \
+    torch-sparse \
+    torch-cluster \
+    torch-spline-conv \
+    torch-geometric -f https://data.pyg.org/whl/torch-1.10.0+cpu.html
+
+# RUN pip install --no-index torch-scatter -f https://data.pyg.org/whl/torch-1.4.0+cu101.html \
+#  && pip install --no-index torch-sparse -f https://data.pyg.org/whl/torch-1.4.0+cu101.html \
+#  && pip install --no-index torch-cluster -f https://data.pyg.org/whl/torch-1.4.0+cu101.html \
+#  && pip install --no-index torch-spline-conv -f https://data.pyg.org/whl/torch-1.4.0+cu101.html \
+#  && pip install torch-geometric
 
 # Installs google cloud sdk, this is mostly for using gsutil to export model.
 RUN wget -nv \
@@ -74,4 +87,4 @@ RUN mkdir /root/src
 COPY src/models/train_model.py /root/src/train_model.py
 
 # Sets up the entry point to invoke the trainer.
-ENTRYPOINT ["python", "train_model.py"]
+ENTRYPOINT ["python3", "/root/src/train_model.py"]
