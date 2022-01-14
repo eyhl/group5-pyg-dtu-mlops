@@ -20,6 +20,7 @@ jobs:
         pip install -r requirements.txt
     - name: Generate Report
       run: |
+        pip install coverage
         wandb disabled
         coverage run -m pytest tests/
     - name: Upload Coverage to Codecov
