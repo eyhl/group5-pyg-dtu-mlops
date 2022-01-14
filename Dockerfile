@@ -25,14 +25,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # RUN ln -s /usr/bin/python3.8 /usr/bin/python3
 
-COPY ./requirements_docker.txt /.
+COPY ./requirements-docker.txt /.
 COPY ./setup.py /.
 
 
 # Installs pip.
 RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
     python3 get-pip.py && \
-    pip install -r requirements_docker.txt --no-cache-dir && \
+    pip install -r requirements-docker.txt --no-cache-dir && \
     #pip install setuptools && \
     rm get-pip.py
 
