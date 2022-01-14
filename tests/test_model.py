@@ -1,13 +1,11 @@
 import pytest
 import torch
 
-from src.models.model import GCN
-
 from src.data.make_dataset import load_data
+from src.models.model import GCN
 
 
 def test_model_input_output():
-    
     data = load_data("data/", name="Cora")
 
     N_nodes = 2708

@@ -63,6 +63,7 @@ def train():
     print(f"Test accuracy: {test_acc * 100:.2f}%")
     wandb.log({"Test accuracy": test_acc})
 
+
 def training_loop(epochs, optimizer, criterion, model, data):
     # Train model
     train_loss = []

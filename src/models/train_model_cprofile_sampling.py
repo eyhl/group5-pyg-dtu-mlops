@@ -3,8 +3,8 @@ import logging
 import pstats
 import sys
 from pstats import SortKey
-import numpy as np
 
+import numpy as np
 import torch
 import torch.nn as nn
 import torch_geometric
@@ -74,13 +74,14 @@ def train():
     print(f"Test accuracy: {test_acc * 100:.2f}%")
     wandb.log({"Test accuracy": test_acc})
 
+
 def training_loop(epochs, optimizer, criterion, model, loader):
     # Train model
     train_loss = []
     for epoch in range(epochs):
         train_loss_batch = []
         for batch in loader:
-        # Clear gradients
+            # Clear gradients
             optimizer.zero_grad()
             # Perform a single forward pass
             out = model(batch.x, batch.edge_index)
