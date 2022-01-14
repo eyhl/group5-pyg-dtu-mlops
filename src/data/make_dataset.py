@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
+import torch
 import torch_geometric.data  # type: ignore
-from torch_geometric.datasets import Planetoid  # type: ignore
-from torch_geometric.transforms import NormalizeFeatures  # type: ignore
 
 
 def load_data(path: str, name: str) -> torch_geometric.data.Data:
@@ -12,7 +11,5 @@ def load_data(path: str, name: str) -> torch_geometric.data.Data:
     :return: data -- the inputs are stored in data.x, labels in data.y,
                      train and test masks in data.train_mask and data.test_mask
     """
-    # Get torch_geometric.data.InMemoryDataset dataset
-    dataset = Planetoid(root=path, name=name, transform=NormalizeFeatures())
-    # Return only the data
-    return dataset[0]
+    dataset, _ = torch.load(path + name + "/processed/data.pt")
+    return dataset
