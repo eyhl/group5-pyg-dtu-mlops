@@ -13,40 +13,56 @@
 # limitations under the License.
 
 # Dockerfile-gpu
-FROM nvidia/cuda:11.5.1-cudnn8-runtime-ubuntu18.04
+FROM python:3.8.12-bullseye
 
 # Installs necessary dependencies.
 RUN apt-get update && apt-get install -y --no-install-recommends \
          wget \
          curl \
-         python3-distutils && \
+         #python3.8 \
+        ca-certificates && \
      rm -rf /var/lib/apt/lists/*
 
-#RUN ln -s /usr/bin/python3.9-dev /usr/bin/python3
+# RUN ln -s /usr/bin/python3.8 /usr/bin/python3
+
+COPY ./requirements.txt /.
+COPY ./setup.py /.
+
 
 # Installs pip.
 RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
     python3 get-pip.py && \
-    pip install setuptools && \
+    pip install -r requirements.txt --no-cache-dir && \
+    #pip install setuptools && \
     rm get-pip.py
 
 WORKDIR /root
 
-# Installs pytorch and torchvision.
-RUN pip install torch==1.0.0 torchvision==0.2.1
+# Installs pytorch and torchvision manually as they do not want to cooporate.
+RUN pip download torch==1.10.1
+RUN pip install torch*.whl 
+RUN pip install torchvision==0.11.2
 
 # Install PyG.
-RUN CPATH=/usr/local/cuda/include:$CPATH \
- && LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH \
- && DYLD_LIBRARY_PATH=/usr/local/cuda/lib:$DYLD_LIBRARY_PATH
+# RUN CPATH=/usr/local/cuda/include:$CPATH \
+#  && LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH \
+#  && DYLD_LIBRARY_PATH=/usr/local/cuda/lib:$DYLD_LIBRARY_PATH
 
 RUN pip install scipy
 
-RUN pip install --no-index torch-scatter -f https://data.pyg.org/whl/torch-1.4.0+cu101.html \
- && pip install --no-index torch-sparse -f https://data.pyg.org/whl/torch-1.4.0+cu101.html \
- && pip install --no-index torch-cluster -f https://data.pyg.org/whl/torch-1.4.0+cu101.html \
- && pip install --no-index torch-spline-conv -f https://data.pyg.org/whl/torch-1.4.0+cu101.html \
- && pip install torch-geometric
+RUN pip install torch-scatter \
+    torch-sparse \
+    torch-cluster \
+    torch-spline-conv \
+    torch-geometric -f https://data.pyg.org/whl/torch-1.10.0+cpu.html
+
+# RUN pip install -e /root/
+
+# RUN pip install --no-index torch-scatter -f https://data.pyg.org/whl/torch-1.4.0+cu101.html \
+#  && pip install --no-index torch-sparse -f https://data.pyg.org/whl/torch-1.4.0+cu101.html \
+#  && pip install --no-index torch-cluster -f https://data.pyg.org/whl/torch-1.4.0+cu101.html \
+#  && pip install --no-index torch-spline-conv -f https://data.pyg.org/whl/torch-1.4.0+cu101.html \
+#  && pip install torch-geometric
 
 # Installs google cloud sdk, this is mostly for using gsutil to export model.
 RUN wget -nv \
@@ -63,13 +79,23 @@ RUN wget -nv \
     rm -rf /root/tools/google-cloud-sdk/.install/.backup
 
 # Path configuration
-ENV PATH $PATH:/root/tools/google-cloud-sdk/bin
+ENV PATH $PATH:/root/tools/google-cloud-sdk/bin -
+
 # Make sure gsutil will use the default service account
 RUN echo '[GoogleCompute]\nservice_account = default' > /etc/boto.cfg
 
 # Copies the trainer code 
-RUN mkdir /root/src
-COPY src/models/train_model.py /root/src/train_model.py
+RUN mkdir /root/project
+WORKDIR /root/project
+COPY src/ /root/project/src/
+COPY models/ /root/project/models
+COPY entrypoint.sh /root/project/entrypoint.sh
+
+ENV PYTHONPATH "${PYTHONPATH}:/root/project"
+
+ARG YOUR_API_KEY=local
+ENV YOUR_API_KEY ${YOUR_API_KEY}
 
 # Sets up the entry point to invoke the trainer.
-ENTRYPOINT ["python", "train_model.py"]
+ENTRYPOINT ["sh", "entrypoint.sh"]
+# ENTRYPOINT ["python3", "-u", "/root/project/src/models/train_model.py"]export YOUR_API_KEY= (my key, secret!)

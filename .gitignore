@@ -93,3 +93,6 @@ target/
 
 # vscode docker connection
 .devcontainer/
+
+# for secret manager setup
+decrypted-data.txt

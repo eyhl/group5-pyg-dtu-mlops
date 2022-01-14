@@ -1,7 +1,7 @@
 import torch
 import torch.nn.functional as F
 from torch import nn
-from torch_geometric.nn import GCNConv
+from torch_geometric.nn import GCNConv  # type: ignore
 
 
 class GCN(nn.Module):
@@ -18,7 +18,7 @@ class GCN(nn.Module):
             raise ValueError("Expected input is not a 2D tensor,"
                              f"instead it is a {x.ndim}D tensor.")
         if x.shape[1] != 1433:
-            raise ValueError(f"Feature vector should be of size 1433.")
+            raise ValueError("Feature vector should be of size 1433.")
         x = self.conv1(x, edge_index)
         x = self.dropout(F.relu(x))
         x = self.conv2(x, edge_index)

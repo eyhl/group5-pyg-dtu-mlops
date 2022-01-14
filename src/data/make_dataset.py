@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-import torch_geometric.data
-from torch_geometric.datasets import Planetoid
-from torch_geometric.transforms import NormalizeFeatures
+import torch_geometric.data  # type: ignore
+from torch_geometric.datasets import Planetoid  # type: ignore
+from torch_geometric.transforms import NormalizeFeatures  # type: ignore
 
 
 def load_data(path: str, name: str) -> torch_geometric.data.Data:

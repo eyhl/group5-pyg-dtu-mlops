@@ -1,0 +1,16 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build',
+         '--build-arg',
+         'YOUR_API_KEY=$$SECRET_KEY',
+         '-t',
+         'gcr.io/linear-rig-337909/group5_proj_cpu_container', 
+         '.']
+  secretEnv: ['SECRET_KEY']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/linear-rig-337909/group5_proj_cpu_container']
+availableSecrets:
+  secretManager:
+  - versionName: projects/688801769388/secrets/YOUR_API_KEY/versions/1
+    env: 'SECRET_KEY'
+timeout: 1200s
