@@ -1,10 +1,12 @@
 import logging
+import os
 import sys
 
 import hydra
 import torch
 import torch.nn as nn
 import torch_geometric  # type: ignore
+from google.cloud import storage  # type: ignore
 from omegaconf import OmegaConf
 
 import wandb
@@ -74,7 +76,18 @@ def train(config):
         wandb.log({"Training loss": loss})
 
     # Save model
-    torch.save(model.state_dict(), orig_cwd + "/models/" + hparams["checkpoint_name"])
+    directory = orig_cwd + "/models/"
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    filename = directory + hparams["checkpoint_name"]
+    torch.save(model.state_dict(), filename)
+    if hparams["cloud"]:
+        bucket_name = hparams["bucket_name"]
+        model_name = hparams["checkpoint_name"]
+        storage_client = storage.Client()
+        bucket = storage_client.bucket(bucket_name)
+        blob = bucket.blob(model_name)
+        blob.upload_from_filename(filename)
 
     # Evaluate model
     test_acc = evaluate(model, data)
