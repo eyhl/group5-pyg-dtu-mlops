@@ -18,24 +18,13 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.8
-    - name: Cache pip
-      uses: actions/cache@v2
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-py${{ matrix.python-version }}-td${{ steps.times.outputs.period }}-pip-${{ hashFiles('requirements.txt') }}-${{ hashFiles('requirements/test.txt') }}
-        restore-keys: ${{ runner.os }}-py${{ matrix.python-version }}-td${{ steps.times.outputs.period }}-pip-
-
+        cache: 'pip'
     - name: Install dependencies
       run: |
-        npm install
         python -m pip install --upgrade pip
         pip install torch
         pip install -r requirements.txt
         pip install -r requirements_tests.txt
-    - name: Build
-      run: npm build
-    - name: Test
-      run: npm test
     - name: Test with pytest
       run: |
         wandb disabled
