@@ -1,7 +1,7 @@
 import torch
 import torch.nn.functional as F
 from torch import nn
-from torch_geometric.nn import GCNConv
+from torch_geometric.nn import GCNConv  # type: ignore
 
 
 class GCN(nn.Module):

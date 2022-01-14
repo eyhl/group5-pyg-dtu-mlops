@@ -13,3 +13,4 @@ availableSecrets:
   secretManager:
   - versionName: projects/688801769388/secrets/YOUR_API_KEY/versions/1
     env: 'SECRET_KEY'
+timeout: 1200s
