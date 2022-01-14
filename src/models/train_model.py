@@ -6,7 +6,7 @@ import sys
 import hydra
 import torch
 import torch.nn as nn
-import torch_geometric
+import torch_geometric  # type: ignore
 from omegaconf import OmegaConf
 
 import wandb
@@ -14,8 +14,6 @@ from src.data.make_dataset import load_data
 from src.models.model import GCN
 
 # from pstats import SortKey
-
-
 
 sys.path.append("..")
 
