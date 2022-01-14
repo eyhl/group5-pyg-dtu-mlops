@@ -7,8 +7,8 @@ from pstats import SortKey
 import numpy as np
 import torch
 import torch.nn as nn
-import torch_geometric
-from torch_geometric.loader import NeighborLoader
+import torch_geometric  # type: ignore
+from torch_geometric.loader import NeighborLoader  # type: ignore
 
 import wandb
 from src.data.make_dataset import load_data

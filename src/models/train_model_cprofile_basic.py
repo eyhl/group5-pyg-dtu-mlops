@@ -6,7 +6,7 @@ from pstats import SortKey
 
 import torch
 import torch.nn as nn
-import torch_geometric
+import torch_geometric  # type: ignore
 
 import wandb
 from src.data.make_dataset import load_data
