@@ -1,17 +1,16 @@
+import cProfile
 import logging
+import pstats
 import sys
+from pstats import SortKey
 
-import hydra
 import torch
 import torch.nn as nn
-import torch_geometric  # type: ignore
-from omegaconf import OmegaConf
+import torch_geometric
 
 import wandb
 from src.data.make_dataset import load_data
 from src.models.model import GCN
-
-# from pstats import SortKey
 
 sys.path.append("..")
 
@@ -32,30 +31,41 @@ def evaluate(model: nn.Module, data: torch_geometric.data.Data) -> float:
     return test_acc
 
 
-@hydra.main(config_path="../config", config_name="default_config.yaml")
-def train(config):
-    print(f"configuration: \n {OmegaConf.to_yaml(config)}")
-    hparams = config.experiment.hyperparams
-    wandb.config = hparams
-    torch.manual_seed(hparams["seed"])
-    orig_cwd = hydra.utils.get_original_cwd()
+# @hydra.main(config_path="../config", config_name="default_config.yaml")
+def train():
+    # print(f"configuration: \n {OmegaConf.to_yaml(config)}")
+    # hparams = config.experiment.hyperparams
+    # wandb.config = hparams
+    torch.manual_seed(666)
+    # orig_cwd = hydra.utils.get_original_cwd()
 
     # Load data
-    data = load_data(orig_cwd + "/data/", name="Cora")
+    data = load_data("data/", name="Cora")
 
     # Model
     model = GCN(
-        hidden_channels=hparams["hidden_channels"],
-        num_features=hparams["num_features"],
-        num_classes=hparams["num_classes"],
-        dropout=hparams["dropout"],
+        hidden_channels=16,
+        num_features=1433,
+        num_classes=7,
+        dropout=0.5,
     )
     optimizer = torch.optim.Adam(model.parameters(), lr=0.01, weight_decay=5e-4)
     criterion = torch.nn.CrossEntropyLoss()
-    epochs = hparams["epochs"]
-    train_loss = []
+    epochs = 1000
 
+    model = training_loop(epochs, optimizer, criterion, model, data)
+
+    # Save model
+    torch.save(model.state_dict(), "models/" + "checkpoint.pt")
+
+    # Evaluate model
+    test_acc = evaluate(model, data)
+    print(f"Test accuracy: {test_acc * 100:.2f}%")
+    wandb.log({"Test accuracy": test_acc})
+
+def training_loop(epochs, optimizer, criterion, model, data):
     # Train model
+    train_loss = []
     for epoch in range(epochs):
         # Clear gradients
         optimizer.zero_grad()
@@ -72,15 +82,13 @@ def train(config):
         # print
         print(f"Epoch: {epoch:03d}, Loss: {loss:.4f}")
         wandb.log({"Training loss": loss})
-
-    # Save model
-    torch.save(model.state_dict(), orig_cwd + "/models/" + hparams["checkpoint_name"])
-
-    # Evaluate model
-    test_acc = evaluate(model, data)
-    print(f"Test accuracy: {test_acc * 100:.2f}%")
-    wandb.log({"Test accuracy": test_acc})
+    return model
 
 
 if __name__ == "__main__":
-    train()
+    cProfile.run('train()', 'restats_basic')
+    p = pstats.Stats('restats_basic')
+    p.sort_stats(SortKey.CUMULATIVE, SortKey.CALLS)
+    p.dump_stats('restats_basic.prof')
+    p.print_stats(30)
+    # train()

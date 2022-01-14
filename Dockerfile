@@ -25,14 +25,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # RUN ln -s /usr/bin/python3.8 /usr/bin/python3
 
-COPY ./requirements.txt /.
+COPY ./requirements-docker.txt /.
 COPY ./setup.py /.
 
 
 # Installs pip.
 RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
     python3 get-pip.py && \
-    pip install -r requirements.txt --no-cache-dir && \
+    pip install -r requirements-docker.txt --no-cache-dir && \
     #pip install setuptools && \
     rm get-pip.py
 
@@ -55,14 +55,6 @@ RUN pip install torch-scatter \
     torch-cluster \
     torch-spline-conv \
     torch-geometric -f https://data.pyg.org/whl/torch-1.10.0+cpu.html
-
-# RUN pip install -e /root/
-
-# RUN pip install --no-index torch-scatter -f https://data.pyg.org/whl/torch-1.4.0+cu101.html \
-#  && pip install --no-index torch-sparse -f https://data.pyg.org/whl/torch-1.4.0+cu101.html \
-#  && pip install --no-index torch-cluster -f https://data.pyg.org/whl/torch-1.4.0+cu101.html \
-#  && pip install --no-index torch-spline-conv -f https://data.pyg.org/whl/torch-1.4.0+cu101.html \
-#  && pip install torch-geometric
 
 # Installs google cloud sdk, this is mostly for using gsutil to export model.
 RUN wget -nv \
@@ -90,12 +82,11 @@ WORKDIR /root/project
 COPY src/ /root/project/src/
 COPY models/ /root/project/models
 COPY entrypoint.sh /root/project/entrypoint.sh
+COPY .dvc/ /root/project/.dvc/
+COPY data.dvc /root/project/data.dvc
+COPY .git/ /root/project/.git/
 
 ENV PYTHONPATH "${PYTHONPATH}:/root/project"
 
-ARG YOUR_API_KEY=local
-ENV YOUR_API_KEY ${YOUR_API_KEY}
-
 # Sets up the entry point to invoke the trainer.
 ENTRYPOINT ["sh", "entrypoint.sh"]
-# ENTRYPOINT ["python3", "-u", "/root/project/src/models/train_model.py"]export YOUR_API_KEY= (my key, secret!)

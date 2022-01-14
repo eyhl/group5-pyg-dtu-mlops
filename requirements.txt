@@ -3,8 +3,6 @@ matplotlib==3.5.1
 numpy==1.21.5
 python-dotenv==0.19.2
 -e .
-# torch==1.10.1
-# torchvision==0.11.2
 typing==3.7.4.3
 
 omegaconf~=2.1.1
@@ -15,6 +13,16 @@ wandb
 dvc
 dvc[gs]
 pytest
+
+# torch
+torch==1.10.1
+torchvision==0.11.2
+torch-scatter -f https://data.pyg.org/whl/torch-1.10.0+cpu.html
+torch-sparse -f https://data.pyg.org/whl/torch-1.10.0+cpu.html
+torch-cluster -f https://data.pyg.org/whl/torch-1.10.0+cpu.html
+torch-spline-conv -f https://data.pyg.org/whl/torch-1.10.0+cpu.html
+torch-geometric -f https://data.pyg.org/whl/torch-1.10.0+cpu.html
+
 
 
 
@@ -43,3 +51,4 @@ pytest
 # torch_geometric
 # Best installation practice depends on platform
 # (see cpu_trainer.dockerfile for an example), or torch_geometric docs
+
