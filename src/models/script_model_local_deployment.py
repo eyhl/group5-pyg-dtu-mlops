@@ -1,9 +1,11 @@
 import os
 
-import torch
 import hydra
-from src.models.model_jittable import GCN
+import torch
+
 from src.data.make_dataset import load_data
+from src.models.model_jittable import GCN
+
 
 @hydra.main(config_path="../config", config_name="default_config.yaml")
 def export_scripted_model(config) -> None:
@@ -17,7 +19,7 @@ def export_scripted_model(config) -> None:
         num_classes=hparams["num_classes"],
         dropout=hparams["dropout"],
     )
-    
+
     path_to_model = orig_cwd + hparams.load_model_from + hparams.checkpoint_name
     state_dict = torch.load(path_to_model)
     model.load_state_dict(state_dict)
@@ -46,4 +48,3 @@ def export_scripted_model(config) -> None:
 
 if __name__ == "__main__":
     export_scripted_model()
-
