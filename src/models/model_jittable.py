@@ -14,9 +14,9 @@ class GCN(nn.Module):
         self.conv2 = GCNConv(hidden_channels, num_classes).jittable()
         self.dropout = nn.Dropout(dropout)
 
-    def forward(self, data) -> torch.Tensor:
-        x = data.x.clone()
-        edge_index = data.edge_index.clone()
+    def forward(self, x, edge_index) -> torch.Tensor:
+        # x = data.x.clone()
+        # edge_index = data.edge_index.clone()
         if x.ndim != 2:
             raise ValueError("Expected input is not a 2D tensor,"
                              f"instead it is a {x.ndim}D tensor.")
