@@ -22,9 +22,9 @@ def export_scripted_model(config) -> None:
     state_dict = torch.load(path_to_model)
     model.load_state_dict(state_dict)
 
-    script_model = torch.jit.script(model)
-
     data = load_data(orig_cwd + "/data/", name="Cora")
+
+    script_model = torch.jit.script(model)
 
     out_unscripted = model(data.x, data.edge_index)
     pred_unscripted = out_unscripted.argmax(dim=1)
