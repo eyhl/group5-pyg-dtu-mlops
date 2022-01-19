@@ -11,7 +11,7 @@ from omegaconf import OmegaConf
 
 import wandb
 from src.data.make_dataset import load_data
-from src.models.model import GCN
+from src.models.model_jittable import GCN
 
 # from pstats import SortKey
 
@@ -25,6 +25,7 @@ wandb.init(project="group5-pyg-dtumlops", entity="group5-dtumlops")
 def evaluate(model: nn.Module, data: torch_geometric.data.Data) -> float:
     model.eval()
     out = model(data.x, data.edge_index)
+    # out = model(data)
     # Use the class with highest probability.
     pred = out.argmax(dim=1)
     # Check against ground-truth labels.
@@ -63,6 +64,7 @@ def train(config):
         optimizer.zero_grad()
         # Perform a single forward pass
         out = model(data.x, data.edge_index)
+        # out = model(data)
         # Compute the loss solely based on the training nodes
         loss = criterion(out[data.train_mask], data.y[data.train_mask])
         # Derive gradients
