@@ -1,5 +1,4 @@
 import torch
-# import torch_geometric.data
 from torch_geometric.datasets import Planetoid  # type: ignore
 from torch_geometric.transforms import NormalizeFeatures  # type: ignore
 

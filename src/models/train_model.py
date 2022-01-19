@@ -7,13 +7,11 @@ import torch
 import torch.nn as nn
 import torch_geometric  # type: ignore
 from google.cloud import storage  # type: ignore
-from omegaconf import OmegaConf
+from omegaconf import DictConfig, OmegaConf
 
 import wandb
 from src.data.make_dataset import load_data
 from src.models.model import GCN
-
-# from pstats import SortKey
 
 sys.path.append("..")
 
@@ -23,6 +21,12 @@ wandb.init(project="group5-pyg-dtumlops", entity="group5-dtumlops")
 
 
 def evaluate(model: nn.Module, data: torch_geometric.data.Data) -> float:
+    """
+    Evaluates model on data and returns accuracy.
+    :param model: Model to be evaluated
+    :param data: Data to evaluate on
+    :return: accuracy
+    """
     model.eval()
     out = model(data.x, data.edge_index)
     # Use the class with highest probability.
@@ -35,7 +39,13 @@ def evaluate(model: nn.Module, data: torch_geometric.data.Data) -> float:
 
 
 @hydra.main(config_path="../config", config_name="default_config.yaml")
-def train(config):
+def train(config: DictConfig) -> None:
+    """
+    Trains the model with hyperparameters in config on train data,
+    saves the model and evaluates it on test data.
+    :param config: Config file used for Hydra
+    :return:
+    """
     print(f"configuration: \n {OmegaConf.to_yaml(config)}")
     hparams = config.experiment.hyperparams
     wandb.config = hparams
@@ -81,6 +91,7 @@ def train(config):
         os.makedirs(directory)
     filename = directory + hparams["checkpoint_name"]
     torch.save(model.state_dict(), filename)
+    # Upload model to cloud gs://{hparams["bucket_name"]}/{hparams["checkpoint_name"]}
     if hparams["cloud"]:
         bucket_name = hparams["bucket_name"]
         model_name = hparams["checkpoint_name"]
