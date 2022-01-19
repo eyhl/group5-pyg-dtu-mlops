@@ -29,6 +29,8 @@ jobs:
         pip install data-science-types
         pip install git+https://github.com/fsal/torchvision-stubs
         mypy src/models/model.py
+        mypy src/models/script_model_local_deployment.py
+        mypy src/models/model_jittable.py
         mypy src/models/train_model.py
         mypy src/models/train_model_cprofile_basic.py
         mypy src/models/train_model_cprofile_sampling.py
