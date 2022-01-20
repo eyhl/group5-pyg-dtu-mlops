@@ -1,10 +1,9 @@
-import os
 from omegaconf import OmegaConf
 import torch
 import hydra
 from src.models.model_jittable import GCN
 from src.data.make_dataset import load_data
-import pickle
+
 
 @hydra.main(config_path="../config", config_name="default_config.yaml")
 def export_scripted_model(config) -> None:
@@ -20,7 +19,7 @@ def export_scripted_model(config) -> None:
         num_classes=hparams["num_classes"],
         dropout=hparams["dropout"],
     )
-    
+
     path_to_model = orig_cwd + hparams.load_model_from + hparams.checkpoint_name
     state_dict = torch.load(path_to_model)
     model.load_state_dict(state_dict)
@@ -28,9 +27,9 @@ def export_scripted_model(config) -> None:
     data = load_data(orig_cwd + "/data/", name="Cora")
 
     script_model = torch.jit.script(model, example_inputs=[hparams["hidden_channels"],
-        hparams["num_features"],
-        hparams["num_classes"],
-        hparams["dropout"]])
+                                                           hparams["num_features"],
+                                                           hparams["num_classes"],
+                                                           hparams["dropout"]])
 
     out_unscripted = model(data.x, data.edge_index)
     pred_unscripted = out_unscripted.argmax(dim=1)
@@ -47,11 +46,10 @@ def export_scripted_model(config) -> None:
         # if not os.path.exists(directory):
         #     os.makedirs(directory)
         # filename = directory + "deployable_model.pt"
-        # torch.save(script_model, orig_cwd + "/models/deployable_model.pt")
-        with open(orig_cwd + "/models/deployable_model.pt", 'wb') as handle:
-            pickle.dump(script_model, handle)
+        torch.save(script_model, orig_cwd + "/models/deployable_model.pt")
+        # with open(orig_cwd + "/models/deployable_model.pt", 'wb') as handle:
+        #     pickle.dump(script_model, handle)
 
 
 if __name__ == "__main__":
     export_scripted_model()
-
