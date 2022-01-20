@@ -5,6 +5,7 @@ PyTorch Geometric for Classification of Scietific Papers
 ![example workflow](https://github.com/eyhl/group5-pyg-dtu-mlops/actions/workflows/flake8.yml/badge.svg)
 ![example workflow](https://github.com/eyhl/group5-pyg-dtu-mlops/actions/workflows/isort.yml/badge.svg)
 ![example workflow](https://github.com/eyhl/group5-pyg-dtu-mlops/actions/workflows/mypy.yml/badge.svg)
+<br/>
 ![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=for-the-badge&logo=PyTorch&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 ![Google Cloud](https://img.shields.io/badge/GoogleCloud-%234285F4.svg?style=for-the-badge&logo=google-cloud&logoColor=white)
@@ -23,8 +24,8 @@ We are using Graph   Neural   Network   models   and   incorporating different G
  
 ## WandB report:
 See the following overview report of the model performance: [Overview](https://wandb.ai/group5-dtumlops/group5-pyg-dtumlops/reports/Overview-of-project-results--VmlldzoxNDYyODk2?accessToken=6sjiecvilemd7q8en7ln598w1kom8bmnup0fsk7xka9e18add4pkvf9l4r4miq5c)<br/>
-And the hyperparameter sweep experiments: [Experiments](www.leadsnowhere.com)
-<iframe src="https://wandb.ai/group5-dtumlops/group5-pyg-dtumlops/reports/Hyperparameter-sweep--VmlldzoxNDYzMDY1" style="border:none;height:1024px;width:100%">
+And the hyperparameter sweep experiments: [Experiments](https://wandb.ai/group5-dtumlops/group5-pyg-dtumlops/reports/Hyperparameter-sweep--VmlldzoxNDYzMDY1?accessToken=50527c4puh8c7addch7kqu5tsm4mswulgh8kad8kz4b13ytlyng66zapnjauhq04)
+
 
 ## Reproduce using the newest build (Docker image):
 The newest build of the repo is provided as an docker image stored on google cloud. Image can be pulled from the Google Cloud Container with the following command:
