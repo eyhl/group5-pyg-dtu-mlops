@@ -50,5 +50,6 @@ def test_on_wrong_feature_dimension_to_forward():
 
 
 if __name__ == "__main__":
+    test_model_input_output()
     test_on_wrong_dimension_to_forward()
     test_on_wrong_feature_dimension_to_forward()
