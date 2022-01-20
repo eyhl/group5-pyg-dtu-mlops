@@ -62,7 +62,7 @@ def train(config: DictConfig) -> None:
         num_classes=hparams["num_classes"],
         dropout=hparams["dropout"],
     )
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.01, weight_decay=5e-4)
+    optimizer = torch.optim.Adam(model.parameters(), lr=hparams["lr"], weight_decay=5e-4)
     criterion = torch.nn.CrossEntropyLoss()
     epochs = hparams["epochs"]
     train_loss = []
