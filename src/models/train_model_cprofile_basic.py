@@ -74,9 +74,9 @@ def training_loop(
     epochs: int,
     optimizer: torch.optim.Optimizer,
     criterion: torch.nn.CrossEntropyLoss,
-    model: nn.Module,
+    model: GCN,
     data: torch_geometric.data.Data,
-) -> nn.Module:
+) -> GCN:
     """
     Training loop
     :return: model

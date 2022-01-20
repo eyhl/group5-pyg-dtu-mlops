@@ -90,7 +90,12 @@ def train(config: DictConfig) -> None:
     if not os.path.exists(directory):
         os.makedirs(directory)
     filename = directory + hparams["checkpoint_name"]
-    torch.save(model.state_dict(), filename)
+    checkpoint = {'num_features': hparams["num_features"],
+                  'num_classes': hparams["num_classes"],
+                  'hidden_channels': hparams["hidden_channels"],
+                  'dropout': hparams["dropout"],
+                  'state_dict': model.state_dict()}
+    torch.save(checkpoint, filename)
     # Upload model to cloud gs://{hparams["bucket_name"]}/{hparams["checkpoint_name"]}
     if hparams["cloud"]:
         bucket_name = hparams["bucket_name"]
