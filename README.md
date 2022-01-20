@@ -21,7 +21,11 @@ layers specific for graphs and defines convolutional operations on the graphs.
 The Cora dataset consisting of 2,708 scientific publications   classified   among   seven   classes.   The   citation network consists of 10,556 links. Each publication is described by   a   binary   label   indicating   the   absence/presence   of   the corresponding word from the dictionary, which consists of 1,433 unique   words.   This   data   is   [publicly   available](https://deepai.org/dataset/cora). We will load it using PyTorch-Geometric interface.
 4. **Deep learning models used?**
 We are using Graph   Neural   Network   models   and   incorporating different Graph Convolutional Network (GCN) layer, implemented in Pytorch Geometric. As the focus of the project is MLOps, the model is not extremely complex, but it is able to classify the papers to a satisfyingly high degree. 
- 
+
+## Project flowchart
+![Alt text](reports/figures/flowchart.png?raw=true "Flowchart")
+
+
 ## WandB report:
 See the following overview report of the model performance: [Overview](https://wandb.ai/group5-dtumlops/group5-pyg-dtumlops/reports/Overview-of-project-results--VmlldzoxNDYyODk2?accessToken=6sjiecvilemd7q8en7ln598w1kom8bmnup0fsk7xka9e18add4pkvf9l4r4miq5c)<br/>
 And the hyperparameter sweep experiments: [Experiments](https://wandb.ai/group5-dtumlops/group5-pyg-dtumlops/reports/Hyperparameter-sweep--VmlldzoxNDYzMDY1?accessToken=50527c4puh8c7addch7kqu5tsm4mswulgh8kad8kz4b13ytlyng66zapnjauhq04)
