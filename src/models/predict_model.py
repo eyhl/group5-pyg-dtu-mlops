@@ -3,7 +3,7 @@ import torch
 from omegaconf import OmegaConf
 
 from src.data.make_dataset import load_data
-from src.models.model import GCN
+from src.models.model import load_checkpoint
 
 
 @hydra.main(config_path="../config", config_name="default_config.yaml")
@@ -22,16 +22,8 @@ def predict(config) -> None:
     data = load_data(orig_cwd + "/data/", name="Cora")
 
     # Model
-    model = GCN(
-        hidden_channels=hparams["hidden_channels"],
-        num_features=hparams["num_features"],
-        num_classes=hparams["num_classes"],
-        dropout=hparams["dropout"],
-    )
-    # Load parameters
     path_to_model = orig_cwd + hparams.load_model_from + hparams.checkpoint_name
-    state_dict = torch.load(path_to_model)
-    model.load_state_dict(state_dict)
+    model = load_checkpoint(path_to_model)
 
     # Make prediction
     out = model(data.x, data.edge_index)

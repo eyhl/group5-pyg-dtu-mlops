@@ -23,3 +23,14 @@ class GCN(nn.Module):
         x = self.dropout(F.relu(x))
         x = self.conv2(x, edge_index)
         return x
+
+
+def load_checkpoint(filepath):
+    checkpoint = torch.load(filepath)
+    model = GCN(checkpoint["hidden_channels"],
+                checkpoint["num_features"],
+                checkpoint["num_classes"],
+                checkpoint["dropout"])
+    model.load_state_dict(checkpoint['state_dict'])
+
+    return model
