@@ -20,6 +20,12 @@ wandb.init(project="group5-pyg-dtumlops", entity="group5-dtumlops")
 
 
 def evaluate(model: nn.Module, data: torch_geometric.data.Data) -> float:
+    """
+    Evaluates model on data and returns accuracy.
+    :param model: Model to be evaluated
+    :param data: Data to evaluate on
+    :return: accuracy
+    """
     model.eval()
     out = model(data.x, data.edge_index)
     # Use the class with highest probability.
@@ -31,13 +37,13 @@ def evaluate(model: nn.Module, data: torch_geometric.data.Data) -> float:
     return test_acc
 
 
-# @hydra.main(config_path="../config", config_name="default_config.yaml")
-def train():
-    # print(f"configuration: \n {OmegaConf.to_yaml(config)}")
-    # hparams = config.experiment.hyperparams
-    # wandb.config = hparams
+def train() -> None:
+    """
+    Trains the model with manual hyperparameters on train data,
+    saves the model and evaluates it on test data.
+    :return:
+    """
     torch.manual_seed(666)
-    # orig_cwd = hydra.utils.get_original_cwd()
 
     # Load data
     data = load_data("data/", name="Cora")
@@ -64,8 +70,17 @@ def train():
     wandb.log({"Test accuracy": test_acc})
 
 
-def training_loop(epochs, optimizer, criterion, model, data):
-    # Train model
+def training_loop(
+                  epochs: int,
+                  optimizer: torch.optim.Optimizer,
+                  criterion: torch.nn.CrossEntropyLoss,
+                  model: nn.Module,
+                  data: torch_geometric.data.Data
+                  ) -> nn.Module:
+    """
+    Training loop
+    :return: model
+    """
     train_loss = []
     for epoch in range(epochs):
         # Clear gradients
@@ -87,9 +102,12 @@ def training_loop(epochs, optimizer, criterion, model, data):
 
 
 if __name__ == "__main__":
-    cProfile.run('train()', 'restats_basic')
-    p = pstats.Stats('restats_basic')
+    """
+    Run cProling, save in a .prof file, and print top 30
+    :return: 
+    """
+    cProfile.run('train()', 'reports/restats_basic')
+    p = pstats.Stats('reports/restats_basic')
     p.sort_stats(SortKey.CUMULATIVE, SortKey.CALLS)
-    p.dump_stats('restats_basic.prof')
+    p.dump_stats('reports/restats_basic.prof')
     p.print_stats(30)
-    # train()
