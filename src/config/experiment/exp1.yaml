@@ -10,3 +10,5 @@ hyperparams:
   dropout: 0.5
   checkpoint_name: checkpoint.pt
   load_model_from: /models/
+  bucket_name: group5-pyg-model
+  cloud: True

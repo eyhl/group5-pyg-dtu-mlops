@@ -20,15 +20,19 @@ jobs:
         python-version: 3.8
     - name: Install dependencies
       run: |
+        pip install torch
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        pip install -r requirements_tests.txt
     - name: Check typing with mypy
       run: |
         pip install mypy
         pip install data-science-types
         pip install git+https://github.com/fsal/torchvision-stubs
         mypy src/models/model.py
+        mypy src/models/script_model_local_deployment.py
+        mypy src/models/model_jittable.py
         mypy src/models/train_model.py
+        mypy src/models/train_model_cprofile_basic.py
+        mypy src/models/train_model_cprofile_sampling.py
         mypy src/models/predict_model.py
         mypy src/data/make_dataset.py

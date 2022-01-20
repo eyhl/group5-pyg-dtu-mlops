@@ -1,5 +1,10 @@
 name: CodeCov
-on: [push, pull_request]
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
 jobs:
   run:
     runs-on: ubuntu-latest
@@ -12,21 +17,17 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.8
-    - name: Cache pip
-      uses: actions/cache@v2
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-py${{ matrix.python-version }}-td${{ steps.times.outputs.period }}-pip-${{ hashFiles('requirements.txt') }}-${{ hashFiles('requirements/test.txt') }}
-        restore-keys: ${{ runner.os }}-py${{ matrix.python-version }}-td${{ steps.times.outputs.period }}-pip-
+        cache: 'pip'
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install torch
         pip install -r requirements.txt
-        pip install -r requirements_tests.txt
     - name: Generate Report
       run: |
+        pip install coverage
         wandb disabled
         coverage run -m pytest tests/
+        coverage report -m --omit=*/__init__.py
     - name: Upload Coverage to Codecov
       uses: codecov/codecov-action@v2

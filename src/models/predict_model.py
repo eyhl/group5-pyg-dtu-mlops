@@ -8,6 +8,11 @@ from src.models.model import GCN
 
 @hydra.main(config_path="../config", config_name="default_config.yaml")
 def predict(config) -> None:
+    """
+    Computes accuracy on validation set.
+    :param config: Config file used for Hydra
+    :return:
+    """
     print(f"configuration: \n {OmegaConf.to_yaml(config)}")
     hparams = config.experiment.hyperparams
     torch.manual_seed(hparams["seed"])
