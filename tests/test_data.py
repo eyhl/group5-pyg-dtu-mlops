@@ -21,8 +21,9 @@ def test_data_loading_output_is_tensor():
 def test_data_loading_output_element_shape():
     dataset = Planetoid(root="data/", name="Cora", transform=NormalizeFeatures())
     torch_size = torch.ones((1, 1433))
-    assert [a.shape == torch_size for a in dataset[0].x], \
-        "Data tensors do not have the correct shape"
+    assert [
+        a.shape == torch_size for a in dataset[0].x
+    ], "Data tensors do not have the correct shape"
 
 
 def test_data_loading_classes():
