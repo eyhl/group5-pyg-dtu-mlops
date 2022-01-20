@@ -50,13 +50,13 @@ def train():
     # Load data
     data = load_data("data/", name="Cora")
     loader = NeighborLoader(
-                            data,
-                            # Sample 30 neighbors for each node for 2 iterations
-                            num_neighbors=[30] * 2,
-                            # Use a batch size of 128 for sampling training nodes
-                            batch_size=32,
-                            input_nodes=data.train_mask,
-                            )
+        data,
+        # Sample 30 neighbors for each node for 2 iterations
+        num_neighbors=[30] * 2,
+        # Use a batch size of 128 for sampling training nodes
+        batch_size=32,
+        input_nodes=data.train_mask,
+    )
 
     # Model
     model = GCN(
@@ -81,12 +81,12 @@ def train():
 
 
 def training_loop(
-                  epochs: int,
-                  optimizer: torch.optim.Optimizer,
-                  criterion: torch.nn.CrossEntropyLoss, 
-                  model: nn.Module, 
-                  loader: torch_geometric.loader
-                  ) -> nn.Module:
+    epochs: int,
+    optimizer: torch.optim.Optimizer,
+    criterion: torch.nn.CrossEntropyLoss,
+    model: nn.Module,
+    loader: torch_geometric.loader,
+) -> nn.Module:
     """
     Training loop
     :return: model
@@ -118,10 +118,10 @@ def training_loop(
 if __name__ == "__main__":
     """
     Run cProling, save in a .prof file, and print top 30
-    :return: 
+    :return:
     """
-    cProfile.run('train()', 'reports/restats_batch_sampling')
-    p = pstats.Stats('reports/restats_batch_sampling')
+    cProfile.run("train()", "reports/restats_batch_sampling")
+    p = pstats.Stats("reports/restats_batch_sampling")
     p.sort_stats(SortKey.CUMULATIVE, SortKey.CALLS)
-    p.dump_stats('reports/restats_batch_sampling.prof')
+    p.dump_stats("reports/restats_batch_sampling.prof")
     p.print_stats(30)

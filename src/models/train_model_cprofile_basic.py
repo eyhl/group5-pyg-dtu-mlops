@@ -71,12 +71,12 @@ def train() -> None:
 
 
 def training_loop(
-                  epochs: int,
-                  optimizer: torch.optim.Optimizer,
-                  criterion: torch.nn.CrossEntropyLoss,
-                  model: nn.Module,
-                  data: torch_geometric.data.Data
-                  ) -> nn.Module:
+    epochs: int,
+    optimizer: torch.optim.Optimizer,
+    criterion: torch.nn.CrossEntropyLoss,
+    model: nn.Module,
+    data: torch_geometric.data.Data,
+) -> nn.Module:
     """
     Training loop
     :return: model
@@ -104,10 +104,10 @@ def training_loop(
 if __name__ == "__main__":
     """
     Run cProling, save in a .prof file, and print top 30
-    :return: 
+    :return:
     """
-    cProfile.run('train()', 'reports/restats_basic')
-    p = pstats.Stats('reports/restats_basic')
+    cProfile.run("train()", "reports/restats_basic")
+    p = pstats.Stats("reports/restats_basic")
     p.sort_stats(SortKey.CUMULATIVE, SortKey.CALLS)
-    p.dump_stats('reports/restats_basic.prof')
+    p.dump_stats("reports/restats_basic.prof")
     p.print_stats(30)

@@ -18,8 +18,9 @@ class GCN(nn.Module):
         x = data.x.copy()
         edge_index = data.edge_index.copy()
         if x.ndim != 2:
-            raise ValueError("Expected input is not a 2D tensor,"
-                             f"instead it is a {x.ndim}D tensor.")
+            raise ValueError(
+                "Expected input is not a 2D tensor," f"instead it is a {x.ndim}D tensor."
+            )
         if x.shape[1] != 1433:
             raise ValueError("Feature vector should be of size 1433.")
         x = self.conv1(x, edge_index)
