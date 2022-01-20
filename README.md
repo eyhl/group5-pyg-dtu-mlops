@@ -109,7 +109,7 @@ If you are running different experiments. Note that the `experiment=...` argumen
     │   └── figures        <- Generated graphics and figures to be used in reporting
     │
     ├── requirements.txt   <- The requirements file for reproducing the project and running it locally
-    ├── requirements.txt   <- The requirements file for running the docker file as some packages are installed individually
+    ├── requirements-docker.txt   <- The requirements file for running the docker file as some packages are installed individually
     │                         in the Dockerfile 
     │
     ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported
