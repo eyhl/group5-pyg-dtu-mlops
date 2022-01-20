@@ -2,7 +2,6 @@ import torch
 import torch.nn.functional as F
 from torch import nn
 from torch_geometric.nn import GCNConv  # type: ignore
-from torch_geometric.data import Data
 
 
 class GCN(nn.Module):
@@ -14,7 +13,16 @@ class GCN(nn.Module):
         self.conv2 = GCNConv(hidden_channels, num_classes).jittable()
         self.dropout = nn.Dropout(dropout)
 
-    def forward(self, x, edge_index) -> torch.Tensor:
+    def __getstate__(self):
+        return (self.conv1, self.conv2, self.dropout)
+
+    def __setstate__(self, state):
+        # Don't need to annotate this, we know what type `state` is!
+        self.conv1 = state[0]
+        self.conv1 = state[1]
+        self.dropout = state[2]
+
+    def forward(self, x: torch.Tensor, edge_index: torch.Tensor) -> torch.Tensor:
         # x = data.x.clone()
         # edge_index = data.edge_index.clone()
         if x.ndim != 2:
