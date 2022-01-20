@@ -1,5 +1,6 @@
 import torch
 import torch.nn.functional as F
+import torch_geometric  # type: ignore
 from torch import nn
 from torch_geometric.nn import GCNConv  # type: ignore
 
@@ -13,7 +14,9 @@ class GCN(nn.Module):
         self.conv2 = GCNConv(hidden_channels, num_classes)
         self.dropout = nn.Dropout(dropout)
 
-    def forward(self, x: torch.Tensor, edge_index: torch.Tensor) -> torch.Tensor:
+    def forward(self, data: torch_geometric.data.Data) -> torch.Tensor:
+        x = data.x
+        edge_index = data.edge_index
         if x.ndim != 2:
             raise ValueError(
                 "Expected input is not a 2D tensor," f"instead it is a {x.ndim}D tensor."
