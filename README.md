@@ -19,16 +19,15 @@ The Cora dataset consisting of 2,708 scientific publications   classified   amon
 We are using Graph   Neural   Network   models   and   incorporating different Graph Convolutional Network (GCN) layer, implemented in Pytorch Geometric. As the focus of the project is MLOps, the model is not extremely complex, but it is able to classify the papers to a satisfyingly high degree. 
  
 ## WandB report:
-See the following overview report of the model performance: [Overview](https://wandb.ai/group5-dtumlops/group5-pyg-dtumlops/reports/Overview-of-project-results--VmlldzoxNDYyODk2?accessToken=6sjiecvilemd7q8en7ln598w1kom8bmnup0fsk7xka9e18add4pkvf9l4r4miq5c)
+See the following overview report of the model performance: [Overview](https://wandb.ai/group5-dtumlops/group5-pyg-dtumlops/reports/Overview-of-project-results--VmlldzoxNDYyODk2?accessToken=6sjiecvilemd7q8en7ln598w1kom8bmnup0fsk7xka9e18add4pkvf9l4r4miq5c)<br/>
 And the hyperparameter sweep experiments: [Experiments](www.leadsnowhere.com)
 
-==============================
 ## Reproduce using the newest build (Docker image):
 The newest build of the repo is provided as an docker image stored on google cloud. Image can be pulled from the Google Cloud Container with the following command:
 ```bash
 docker pull gcr.io/linear-rig-337909/group5_proj_cpu_container:latest
 ```
-==============================
+
 ## How to install
 Installing the project on your machine should be straighforward although Pytorch Geometric can cause some trouble. Clone the repo:
 ```bash
@@ -38,7 +37,7 @@ Install requirements, preferably in seperate virtual environment:
 ```bash
 pip install -r requirements.txt
 ```
-==============================
+
 ## How to run
 Running the training locally can be done with calling the `train_model.py` from the terminal:
 ```bash
@@ -66,7 +65,9 @@ gcloud ai-platform jobs submit training $JOB_NAME \
 $WANDB_API_KEY \
 experiment.hyperparams.lr=0.02
 ```
+
 for changing a single hyperparameter or 
+
 ```bash
 gcloud ai-platform jobs submit training $JOB_NAME \
   --region $REGION \
@@ -75,9 +76,11 @@ gcloud ai-platform jobs submit training $JOB_NAME \
 $WANDB_API_KEY \
 experiment=src/config/experiment/exp1.yml
 ```
+
 If you are running different experiments. Note that the `experiment=...` argument has to be provided. If you are just debugging you can pass `experiment.hyperparams.load_model_from=/models/`
-==============================
-Project Organization
+
+
+## Project Organization
 ------------
 
     ├── LICENSE
