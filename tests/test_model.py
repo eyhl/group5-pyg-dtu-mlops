@@ -8,7 +8,7 @@ from src.models.model import GCN
 def test_model_input_output():
     data = load_data("data/", name="Cora")
 
-    N_nodes = 2708
+    N_nodes = data.x.shape[0]
     N_features = 1433
     N_classes = 7
 
@@ -20,11 +20,17 @@ def test_model_input_output():
     )
 
     # Check for the input dimension
-    assert data.x.shape == torch.Size([N_nodes, N_features])
-    assert data.y.shape == torch.Size([N_nodes])
+    assert data.x.shape == torch.Size(
+        [N_nodes, N_features]
+    ), f"Incorrect shape of node features. Feature vector should be {N_features} elements long"
+
+    assert data.y.shape == torch.Size(
+        [N_nodes]
+    ), "Number of targets ({data.x.shape}) is not equal to the number of nodes ({data.y.shape})."
     out = model(data.x, data.edge_index)
+
     # Check for the output dimension
-    assert out.shape == torch.Size([N_nodes, N_classes])
+    assert out.shape == torch.Size([N_nodes, N_classes]), "Incorrect shape of model output."
 
 
 def test_on_wrong_dimension_to_forward():
