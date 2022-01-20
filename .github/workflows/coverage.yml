@@ -28,5 +28,6 @@ jobs:
         pip install coverage
         wandb disabled
         coverage run -m pytest tests/
+        coverage report -m --omit=*/__init__.py
     - name: Upload Coverage to Codecov
       uses: codecov/codecov-action@v2
