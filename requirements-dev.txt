@@ -12,7 +12,14 @@ hydra-core
 wandb
 dvc
 dvc[gs]
+
+# developer related
 pytest
+black
+flake8
+mypy
+coverage 
+isort
 
 # torch
 torch==1.10.1
