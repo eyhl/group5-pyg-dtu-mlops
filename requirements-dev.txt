@@ -1,0 +1,31 @@
+click==8.0.3
+matplotlib==3.5.1
+numpy==1.21.5
+python-dotenv==0.19.2
+-e .
+typing==3.7.4.3
+
+omegaconf~=2.1.1
+src~=0.1.0
+setuptools~=60.2.0
+hydra-core
+wandb
+dvc
+dvc[gs]
+
+# developer related
+pytest
+black
+flake8
+mypy
+coverage 
+isort
+
+# torch
+torch==1.10.1
+torchvision==0.11.2
+torch-scatter -f https://data.pyg.org/whl/torch-1.10.0+cpu.html
+torch-sparse -f https://data.pyg.org/whl/torch-1.10.0+cpu.html
+torch-cluster -f https://data.pyg.org/whl/torch-1.10.0+cpu.html
+torch-spline-conv -f https://data.pyg.org/whl/torch-1.10.0+cpu.html
+torch-geometric -f https://data.pyg.org/whl/torch-1.10.0+cpu.html
