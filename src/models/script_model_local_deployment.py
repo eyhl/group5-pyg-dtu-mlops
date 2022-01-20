@@ -3,7 +3,6 @@ import torch
 import hydra
 from src.models.model_jittable import GCN
 from src.data.make_dataset import load_data
-import pickle
 
 
 @hydra.main(config_path="../config", config_name="default_config.yaml")
@@ -22,8 +21,7 @@ def export_scripted_model(config) -> None:
     )
 
     path_to_model = orig_cwd + hparams.load_model_from + hparams.checkpoint_name
-    # state_dict = torch.load(path_to_model)
-    state_dict = torch.load(orig_cwd + "/models/checkpoint_jittable.pt")
+    state_dict = torch.load(path_to_model)
     model.load_state_dict(state_dict)
 
     data = load_data(orig_cwd + "/data/", name="Cora")
@@ -43,14 +41,7 @@ def export_scripted_model(config) -> None:
     print("Unscripted:", unscripted_top5_indices, "Scripted:", scripted_top5_indices)
 
     if torch.allclose(unscripted_top5_indices, scripted_top5_indices):
-        # Save model
-        # directory = orig_cwd + "/models/"
-        # if not os.path.exists(directory):
-        #     os.makedirs(directory)
-        # filename = directory + "deployable_model.pt"
-        # torch.save(script_model, orig_cwd + "/models/deployable_model.pt")
-        # with open(orig_cwd + "/models/deployable_model.pt", 'wb') as handle:
-            # pickle.dump(script_model, handle, pickle.HIGHEST_PROTOCOL)
+        torch.save(script_model, orig_cwd + "/models/deployable_model.pt")
 
 
 if __name__ == "__main__":
