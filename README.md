@@ -86,7 +86,7 @@ $WANDB_API_KEY \
 experiment=src/config/experiment/exp1.yml
 ```
 
-If you are running different experiments. Note that the `experiment=...` argument has to be provided. If you are just debugging you can pass `experiment.hyperparams.load_model_from=/models/`
+If you are running different experiments. Note that the `experiment=...` argument has to be provided. If you are just debugging you can pass `experiment.hyperparams.load_model_from=/models/`.
 
 
 ## Project Organization
